@@ -2,7 +2,7 @@ import requests
 import logging
 import time
 from .common import fetch_data, check_api_limits, save_to_json
-from .config import BASE_URL, ORG_ID, API_KEY, USER_AGENT
+from .config import MERAKI_BASE_URL, MERAKI_ORG_ID, MERAKI_API_KEY, USER_AGENT
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -15,7 +15,7 @@ def get_headers():
     return {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "X-Cisco-Meraki-API-Key": API_KEY,
+        "X-Cisco-Meraki-API-Key": MERAKI_API_KEY,
         "User-Agent": USER_AGENT
     }
 
@@ -57,19 +57,19 @@ def fetch_data_with_error_handling(url, params=None):
 
 def get_networks():
     """Get networks for the organization from the Meraki API."""
-    url = f"{BASE_URL}/organizations/{ORG_ID}/networks"
+    url = f"{MERAKI_BASE_URL}/organizations/{MERAKI_ORG_ID}/networks"
     logging.info(f"Fetching networks from {url}")
     return fetch_data_with_error_handling(url)
 
 def get_devices():
     """Get devices for the organization from the Meraki API."""
-    url = f"{BASE_URL}/organizations/{ORG_ID}/devices"
+    url = f"{MERAKI_BASE_URL}/organizations/{MERAKI_ORG_ID}/devices"
     logging.info(f"Fetching devices from {url}")
     return fetch_data_with_error_handling(url)
 
 def get_ssids(network_id):
     """Get SSIDs for a given network."""
-    url = f"{BASE_URL}/networks/{network_id}/wireless/ssids"
+    url = f"{MERAKI_BASE_URL}/networks/{network_id}/wireless/ssids"
     logging.info(f"Fetching SSIDs for network {network_id}")
     ssids = fetch_data_with_error_handling(url)
     if not ssids:
@@ -79,7 +79,7 @@ def get_ssids(network_id):
 
 def get_access_points(network_id):
     """Get access points for a given network."""
-    url = f"{BASE_URL}/networks/{network_id}/devices"
+    url = f"{MERAKI_BASE_URL}/networks/{network_id}/devices"
     logging.info(f"Fetching access points for network {network_id}")
     devices = fetch_data_with_error_handling(url)
     access_points = [device for device in devices if device['model'].startswith('MR')]

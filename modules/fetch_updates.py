@@ -2,19 +2,19 @@ import logging
 import time
 import requests
 from .common import fetch_data, save_to_json, load_last_fetch_time, save_last_fetch_time, create_directories, check_api_limits
-from .config import BASE_URL, ORG_ID, API_KEY, USER_AGENT
+from .config import MERAKI_BASE_URL, MERAKI_ORG_ID, MERAKI_API_KEY, USER_AGENT
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MerakiFetcher:
     def __init__(self):
-        self.base_url = BASE_URL
-        self.org_id = ORG_ID
+        self.base_url = MERAKI_BASE_URL
+        self.org_id = MERAKI_ORG_ID
         self.headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "X-Cisco-Meraki-API-Key": API_KEY,
+            "X-Cisco-Meraki-API-Key": MERAKI_API_KEY,
             "User-Agent": USER_AGENT
         }
 

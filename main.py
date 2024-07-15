@@ -25,7 +25,7 @@ def main():
         common.save_to_json(organization_details, 'organization_details.json')
         logging.info("Organization details fetched and saved successfully")
 
-        # uncomment the following code to get fresh updates
+        # UNCOMMENT the following code to get fresh updates
         # # Fetch updates
         # logging.info("Fetching updates")
         # fetcher = MerakiFetcher()

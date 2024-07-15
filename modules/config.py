@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Constants
-API_KEY = os.getenv('MERAKI_API_KEY')
-ORG_ID = os.getenv('MERAKI_ORG_ID')
+MERAKI_API_KEY = os.getenv('MERAKI_API_KEY')
+MERAKI_ORG_ID = os.getenv('MERAKI_ORG_ID')
 USER_AGENT = os.getenv('USER_AGENT')
-BASE_URL = "https://api.meraki.com/api/v1"
+MERAKI_BASE_URL = "https://api.meraki.com/api/v1"
 HEADERS = {
     "Content-Type": "application/json",
     "Accept": "application/json",
