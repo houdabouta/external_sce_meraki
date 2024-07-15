@@ -42,22 +42,16 @@ class MerakiFetcher:
     def get_networks(self):
         """Get networks for the organization from the Meraki API."""
         url = f"{self.base_url}/organizations/{self.org_id}/networks"
-        params = {'perPage': 1000}
+        params = {'perPage': 100}
         logging.info(f"Fetching networks from {url}")
         return self.fetch_data_with_pagination(url, params)
 
     def get_devices(self, network_id):
         """Get devices for a given network."""
         url = f"{self.base_url}/networks/{network_id}/devices"
-        params = {'perPage': 1000}
+        params = {'perPage': 100}
         logging.info(f"Fetching devices for network {network_id}")
         return self.fetch_data_with_pagination(url, params)
-
-    # def get_ssids(self, network_id):
-    #     """Get SSIDs for a given wireless network."""
-    #     url = f"{self.base_url}/networks/{network_id}/wireless/ssids"
-    #     logging.info(f"Fetching SSIDs for network {network_id}")
-    #     return self.fetch_data_with_pagination(url)
 
     def get_ssids(self, network_id):
         """Get SSIDs for a given wireless network."""
@@ -70,30 +64,6 @@ class MerakiFetcher:
         except Exception as e:
             logging.error(f"Failed to fetch SSIDs for network {network_id}: {e}")
             return []
-
-    # def fetch_network_details(self, network, last_fetch_time):
-    #     """Fetch devices and SSIDs for a given network and return a combined structure."""
-    #     network_id = network['id']
-    #     network_type = network.get('type', '')
-    #     network_data = {
-    #         'network': network,
-    #         'devices': [],
-    #         'ssids': []
-    #     }
-    #     try:
-    #         # Fetch devices
-    #         devices = self.get_devices(network_id)
-    #         network_data['devices'] = devices
-
-    #         # Fetch SSIDs if it's a wireless network
-    #         if 'wireless' in network_type:
-    #             ssids = self.get_ssids(network_id)
-    #             network_data['ssids'] = ssids
-
-    #     except Exception as e:
-    #         logging.error(f"An error occurred while fetching details for network {network_id}: {e}")
-        
-    #     return network_data
 
     def fetch_network_details(self, network, last_fetch_time):
         """Fetch devices and SSIDs for a given network and return a combined structure."""

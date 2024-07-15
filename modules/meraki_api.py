@@ -101,7 +101,7 @@ def get_organization_details():
         ssids = []
         if 'wireless' in product_types:
             ssids = get_ssids(network_id)
-            logging.info(f"SSIDs for network {network_id}: {ssids}")
+            # logging.info(f"SSIDs for network {network_id}: {ssids}")
 
         network_details = {
             'network': network,

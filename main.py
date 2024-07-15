@@ -25,19 +25,19 @@ def main():
         common.save_to_json(organization_details, 'organization_details.json')
         logging.info("Organization details fetched and saved successfully")
 
-        # Fetch updates
-        logging.info("Fetching updates")
-        fetcher = MerakiFetcher()
-        first_run_success = fetcher.fetch_updates()
-        if not first_run_success:
-            logging.info("Retrying fetch updates due to an error in the first run")
-            time.sleep(5)  # Wait for a short period before retrying
-            fetcher.fetch_updates()
-        logging.info("Updates fetched successfully")
-
-        # Update the last fetch time
-        common.save_last_fetch_time()
-        logging.info("Last fetch time updated successfully")
+        # uncomment the following code to get fresh updates
+        # # Fetch updates
+        # logging.info("Fetching updates")
+        # fetcher = MerakiFetcher()
+        # first_run_success = fetcher.fetch_updates()
+        # if not first_run_success:
+        #     logging.info("Retrying fetch updates due to an error in the first run")
+        #     time.sleep(5)  # Wait for a short period before retrying
+        #     fetcher.fetch_updates()
+        # logging.info("Updates fetched successfully")
+        # # Update the last fetch time
+        # common.save_last_fetch_time()
+        # logging.info("Last fetch time updated successfully")
 
     except requests.HTTPError as e:
         logging.error(f"HTTP error occurred: {e}")
