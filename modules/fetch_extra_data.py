@@ -100,7 +100,7 @@ class MerakiFetcher:
             networks_data[network['id']] = network_data
         return networks_data
 
-    def fetch_updates(self):
+    def fetch_extra_data(self):
         create_directories()  # Ensure directories are created
         last_fetch_time = load_last_fetch_time()
         try:
@@ -126,5 +126,5 @@ class MerakiFetcher:
 if __name__ == "__main__":
     logging.info("Starting Meraki Dashboard data fetching script")
     fetcher = MerakiFetcher()
-    fetcher.fetch_updates()
+    fetcher.fetch_extra_data()
     logging.info("Script finished executing")

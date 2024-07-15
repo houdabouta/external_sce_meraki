@@ -8,7 +8,7 @@ import requests
 sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
 
 from modules import common, meraki_api
-from modules.fetch_updates import MerakiFetcher  # Ensure the class is imported directly
+from modules.fetch_extra_data import MerakiFetcher  # Ensure the class is imported directly
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -25,19 +25,18 @@ def main():
         common.save_to_json(organization_details, 'organization_details.json')
         logging.info("Organization details fetched and saved successfully")
 
-        # UNCOMMENT the following code to get fresh updates
-        # # Fetch updates
-        # logging.info("Fetching updates")
-        # fetcher = MerakiFetcher()
-        # first_run_success = fetcher.fetch_updates()
-        # if not first_run_success:
-        #     logging.info("Retrying fetch updates due to an error in the first run")
-        #     time.sleep(5)  # Wait for a short period before retrying
-        #     fetcher.fetch_updates()
-        # logging.info("Updates fetched successfully")
-        # # Update the last fetch time
-        # common.save_last_fetch_time()
-        # logging.info("Last fetch time updated successfully")
+        # Fetch updates
+        logging.info("Fetching updates")
+        fetcher = MerakiFetcher()
+        first_run_success = fetcher.fetch_extra_data()
+        if not first_run_success:
+            logging.info("Retrying fetch updates due to an error in the first run")
+            time.sleep(5)  # Wait for a short period before retrying
+            fetcher.fetch_extra_data()
+        logging.info("Updates fetched successfully")
+        # Update the last fetch time
+        common.save_last_fetch_time()
+        logging.info("Last fetch time updated successfully")
 
     except requests.HTTPError as e:
         logging.error(f"HTTP error occurred: {e}")
