@@ -48,13 +48,6 @@ class MerakiFetcher:
         logging.info(f"Fetching networks from {url}")
         return self.fetch_data_with_pagination(url, params)
 
-    # def get_devices(self, network_id):
-    #     """Get devices for a given network."""
-    #     url = f"{self.base_url}/networks/{network_id}/devices"
-    #     params = {'perPage': 100}
-    #     logging.info(f"Fetching devices for network {network_id}")
-    #     return self.fetch_data_with_pagination(url, params)
-
     def get_devices(self, network_id):
         """Get devices for a given network."""
         url = f"{self.base_url}/networks/{network_id}/devices"
