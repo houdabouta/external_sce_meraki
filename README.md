@@ -14,15 +14,7 @@ This repository contains a project related to Meraki API integration, aimed at p
   - [meraki_api.py and fetch_data.py](#meraki_apipy)
 
 ## Installation
-1. Clone the repository:
-    ```
-    git clone https://github.com/houdabouta/external_sce_meraki.git
-    ```
-2. Navigate to the project directory:
-    ```
-    cd external_sce_meraki
-    ```
-3. Install the required dependencies:
+Install the required dependencies:
     ```
     pip install -r requirements.txt
     ```
