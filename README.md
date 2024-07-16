@@ -11,10 +11,7 @@ This repository contains a project related to Meraki API integration, aimed at p
 - [Project Structure](#project-structure)
 - [Detailed Descriptions](#detailed-descriptions)
   - [cloudifi_api.py](#cloudifi_apipy)
-  - [meraki_api.py](#meraki_apipy)
-  - [fetch_data.py](#fetch_datapy)
-- [Contributing](#contributing)
-- [License](#license)
+  - [meraki_api.py and fetch_data.py](#meraki_apipy)
 
 ## Installation
 1. Clone the repository:
