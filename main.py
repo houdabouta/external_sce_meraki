@@ -3,6 +3,8 @@ import sys
 import logging
 import time
 import requests
+import asyncio
+import json
 
 # Add the modules path to sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
@@ -20,32 +22,47 @@ def main():
     last_fetch_time = common.load_last_fetch_time()
 
     try:
-        # Fetch organization details
-        logging.info("Fetching organization details")
-        organization_details = meraki_api.get_organization_details()
-        common.save_to_json(organization_details, 'organization_details.json')
-        logging.info("Organization details fetched and saved successfully")
+        # # Fetch organization details
+        # logging.info("Fetching organization details")
+        # organization_details = meraki_api.get_organization_details()
+        # common.save_to_json(organization_details, 'organization_details.json')
+        # logging.info("Organization details fetched and saved successfully")
 
-        # Fetch updates
-        logging.info("Fetching updates")
-        fetcher = MerakiFetcher()
-        first_run_success = fetcher.fetch_extra_data()
-        if not first_run_success:
-            logging.info("Retrying fetch updates due to an error in the first run")
-            time.sleep(5)  # Wait for a short period before retrying
-            fetcher.fetch_extra_data()
-        logging.info("Updates fetched successfully")
-        # Update the last fetch time
-        common.save_last_fetch_time()
-        logging.info("Last fetch time updated successfully")
+        # # Fetch updates
+        # logging.info("Fetching additionnal details")
+        # fetcher = MerakiFetcher()
+        # first_run_success = fetcher.fetch_extra_data()
+        # if not first_run_success:
+        #     logging.info("Retrying fetch updates due to an error in the first run")
+        #     time.sleep(5)  # Wait for a short period before retrying
+        #     fetcher.fetch_extra_data()
+        # logging.info("Updates fetched successfully")
+        # # Update the last fetch time
+        # common.save_last_fetch_time()
+        # logging.info("Last fetch time updated successfully")
 
-        # Propagate meraki data to Cloudi-FI
+        # Propagate Meraki data to Cloudi-FI
+        logging.info("Initializing CloudiFi class")
         cf = CloudiFi()
-        cf.fetch_and_save_details()
+
+        logging.info("Fetching and saving details from CloudiFi")
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(cf.fetch_and_save_details())
+        logging.info("Details fetched and saved successfully")
+
+        logging.info("Loading Meraki data from JSON file")
         with open("results/meraki_data/networks_devices_ssids.json") as f:
             meraki_data = json.load(f)
-        cf.create_locations(meraki_data)
+        logging.info("Meraki data loaded successfully")
 
+        logging.info("Preparing location details")
+        cf.prepare_location_details(meraki_data)
+        logging.info("Location details prepared successfully")
+
+        logging.info("Creating locations in CloudiFi from the saved JSON file")
+        loop.run_until_complete(cf.create_locations_from_saved_data())
+        logging.info("All locations created successfully")
+        
     except requests.HTTPError as e:
         logging.error(f"HTTP error occurred: {e}")
         if e.response.status_code == 429:

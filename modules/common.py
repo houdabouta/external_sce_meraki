@@ -21,11 +21,20 @@ adapter = HTTPAdapter(max_retries=retry_strategy)
 http = requests.Session()
 http.mount("https://", adapter)
 
+# def create_directories():
+#     """Create directories for storing JSON data files."""
+#     try:
+#         os.makedirs(MERAKI_DATA_DIR, exist_ok=True)
+#         logging.info(f"Directories {RESULTS_DIR} and {MERAKI_DATA_DIR} have been created or already exist.")
+#     except Exception as e:
+#         logging.error(f"Failed to create directories: {e}")
+
 def create_directories():
     """Create directories for storing JSON data files."""
     try:
         os.makedirs(MERAKI_DATA_DIR, exist_ok=True)
-        logging.info(f"Directories {RESULTS_DIR} and {MERAKI_DATA_DIR} have been created or already exist.")
+        os.makedirs(CLOUDIFI_DATA_DIR, exist_ok=True)
+        logging.info(f"Directories {MERAKI_DATA_DIR} and {CLOUDIFI_DATA_DIR} have been created or already exist.")
     except Exception as e:
         logging.error(f"Failed to create directories: {e}")
 
