@@ -22,24 +22,24 @@ def main():
     last_fetch_time = common.load_last_fetch_time()
 
     try:
-        # # Fetch organization details
-        # logging.info("Fetching organization details")
-        # organization_details = meraki_api.get_organization_details()
-        # common.save_to_json(organization_details, 'organization_details.json')
-        # logging.info("Organization details fetched and saved successfully")
+        # Fetch organization details
+        logging.info("Fetching organization details")
+        organization_details = meraki_api.get_organization_details()
+        common.save_to_json(organization_details, 'organization_details.json')
+        logging.info("Organization details fetched and saved successfully")
 
-        # # Fetch updates
-        # logging.info("Fetching additionnal details")
-        # fetcher = MerakiFetcher()
-        # first_run_success = fetcher.fetch_extra_data()
-        # if not first_run_success:
-        #     logging.info("Retrying fetch updates due to an error in the first run")
-        #     time.sleep(5)  # Wait for a short period before retrying
-        #     fetcher.fetch_extra_data()
-        # logging.info("Updates fetched successfully")
-        # # Update the last fetch time
-        # common.save_last_fetch_time()
-        # logging.info("Last fetch time updated successfully")
+        # Fetch updates
+        logging.info("Fetching additionnal details")
+        fetcher = MerakiFetcher()
+        first_run_success = fetcher.fetch_extra_data()
+        if not first_run_success:
+            logging.info("Retrying fetch updates due to an error in the first run")
+            time.sleep(5)  # Wait for a short period before retrying
+            fetcher.fetch_extra_data()
+        logging.info("Updates fetched successfully")
+        # Update the last fetch time
+        common.save_last_fetch_time()
+        logging.info("Last fetch time updated successfully")
 
         # Propagate Meraki data to Cloudi-FI
         logging.info("Initializing CloudiFi class")
