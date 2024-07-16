@@ -52,6 +52,7 @@ This file contains sensitive information such as API keys and tokens required fo
 - `modules/`: Directory containing various modules for different functionalities.
 - `requirements.txt`: List of dependencies required to run the project.
 - `.gitignore`: Git ignore file specifying files and directories to be ignored.
+- `results`: Directory containing subdirectories for generated results file.
 
 ## Detailed Descriptions
 ### `cloudifi_api.py`
