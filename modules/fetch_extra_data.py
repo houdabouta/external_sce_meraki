@@ -1,6 +1,7 @@
 import logging
 import time
 import requests
+from geopy.geocoders import Nominatim
 from .common import fetch_data, save_to_json, load_last_fetch_time, save_last_fetch_time, create_directories, check_api_limits
 from .config import MERAKI_BASE_URL, MERAKI_ORG_ID, MERAKI_API_KEY, USER_AGENT
 
@@ -17,6 +18,7 @@ class MerakiFetcher:
             "X-Cisco-Meraki-API-Key": MERAKI_API_KEY,
             "User-Agent": USER_AGENT
         }
+        self.geolocator = Nominatim(user_agent=USER_AGENT)  # Initialize geolocator
 
     def fetch_data_with_pagination(self, url, params=None):
         """Fetch data from the Meraki API with pagination support."""
@@ -46,13 +48,32 @@ class MerakiFetcher:
         logging.info(f"Fetching networks from {url}")
         return self.fetch_data_with_pagination(url, params)
 
+    # def get_devices(self, network_id):
+    #     """Get devices for a given network."""
+    #     url = f"{self.base_url}/networks/{network_id}/devices"
+    #     params = {'perPage': 100}
+    #     logging.info(f"Fetching devices for network {network_id}")
+    #     return self.fetch_data_with_pagination(url, params)
+
     def get_devices(self, network_id):
         """Get devices for a given network."""
         url = f"{self.base_url}/networks/{network_id}/devices"
         params = {'perPage': 100}
-        logging.info(f"Fetching devices for network {network_id}")
-        return self.fetch_data_with_pagination(url, params)
+        logging.info(f"Fetching devices from {url}")
+        devices = self.fetch_data_with_pagination(url, params)
 
+        # Add location information
+        for device in devices:
+            if 'lat' in device and 'lng' in device:
+                location = self.geolocator.reverse((device['lat'], device['lng']), exactly_one=True)
+                address = location.raw.get('address', {})
+                device['country'] = address.get('country', 'Unknown')
+                device['city'] = address.get('city', 'Unknown')
+                device['state'] = address.get('state', 'Unknown')
+                device['postcode'] = address.get('postcode', 'Unknown')
+
+        return devices
+    
     def get_ssids(self, network_id):
         """Get SSIDs for a given wireless network."""
         url = f"{self.base_url}/networks/{network_id}/wireless/ssids"
@@ -107,7 +128,15 @@ class MerakiFetcher:
             # Fetch networks
             networks = self.get_networks()
             save_to_json(networks, 'networks.json')
-            
+
+            # Fetch devices location details
+            all_devices = []
+            for network in networks:
+                devices = self.get_devices(network['id'])
+                all_devices.extend(devices)
+
+            save_to_json(all_devices, 'devices_with_location.json')
+
             # Fetch devices and SSIDs for each network
             networks_data = self.fetch_all_network_details(networks, last_fetch_time)
             save_to_json(networks_data, 'networks_devices_ssids.json')
