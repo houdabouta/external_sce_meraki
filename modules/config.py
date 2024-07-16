@@ -18,3 +18,6 @@ HEADERS = {
 RESULTS_DIR = 'results'
 MERAKI_DATA_DIR = os.path.join(RESULTS_DIR, 'meraki_data')
 LAST_FETCH_FILE = 'results/last_fetch.json'
+CLOUDIFI_REFRESH_TOKEN = os.path.join('CLOUDIFI_REFRESH_TOKEN')
+CLOUDIFI_BASE_URL = os.path.join('CLOUDIFI_BASE_URL')
+CLOUDIFI_TEMPLATE_ID = os.path.join('CLOUDIFI_TEMPLATE_ID')

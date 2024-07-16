@@ -7,8 +7,9 @@ import requests
 # Add the modules path to sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
 
-from modules import common, meraki_api
-from modules.fetch_extra_data import MerakiFetcher  # Ensure the class is imported directly
+from modules import common, meraki_api, cloudifi_api
+from modules.fetch_extra_data import MerakiFetcher
+from modules.cloudifi_api import CloudiFi
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -37,6 +38,13 @@ def main():
         # Update the last fetch time
         common.save_last_fetch_time()
         logging.info("Last fetch time updated successfully")
+
+        # Propagate meraki data to Cloudi-FI
+        cf = CloudiFi()
+        cf.fetch_and_save_details()
+        with open("results/meraki_data/networks_devices_ssids.json") as f:
+            meraki_data = json.load(f)
+        cf.create_locations(meraki_data)
 
     except requests.HTTPError as e:
         logging.error(f"HTTP error occurred: {e}")
